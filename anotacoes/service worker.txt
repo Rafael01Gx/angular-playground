@@ -1,0 +1,34 @@
+ngsw-config.json
+
+cypress para Testes Interativos de Service Workers:
+Utilização: Cypress é ideal para simular interações de usuário(a) que dependem da funcionalidade do Service Worker. Ele permite testar o fluxo completo da aplicação em um ambiente que se assemelha ao uso real.
+Exemplo de Código:
+-----------------------------------------------------
+describe('Service Worker Registration', () => {
+  it('should register the service worker', () => {
+    cy.visit('/')
+    cy.window().its('navigator.serviceWorker').invoke('getRegistration').then(sw => {
+      expect(sw).to.exist;
+    });
+  });
+});
+-----------------------------------------------------
+Documentação e Mais Informações: Para explorar mais sobre como configurar e executar testes com Cypress, visite a documentação oficial do Cypress.
+Puppeteer para testes Headless de Service Workers:
+Utilização: Puppeteer é recomendado para testes em ambientes controlados onde não é necessária a interação visual, como testes de instalação e ativação de Service Workers.
+
+Exemplo de Código:
+-----------------------------------------------------
+const puppeteer = require('puppeteer');
+
+(async () => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto('http://localhost:4200');
+
+  const sw = await page.evaluate(() => navigator.serviceWorker.controller);
+  console.log('Service Worker active:', sw);
+
+  await browser.close();
+})();
+-----------------------------------------------------
